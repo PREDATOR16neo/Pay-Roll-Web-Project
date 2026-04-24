@@ -16,7 +16,7 @@ class User extends Component
     public function render()
     {
         $users = ModelsUser::all();
-        $users = ModelsUser::where('name', 'like', "%{$this->keyword}%")->get();
+        $users = ModelsUser::where('name', 'like', "%{$this->keyword}%")->orWhere('email', 'like', "%{$this->keyword}%")->get();
         return view('livewire.admin.user', compact('users'));
     }
 
@@ -27,10 +27,12 @@ class User extends Component
                 'name' => 'required',
                 'email' => 'required|email',
                 'password' => 'required|min:6'
-            ]);
+            ]
+        );
 
-            ModelsUser::create($validated);
-            session()->flash('message', 'User berhasil di tambahkan');
+        ModelsUser::create($validated);
+        $this->clear();
+        session()->flash('message', 'User berhasil di tambahkan');
     }
 
     public function destroy($id)
@@ -50,19 +52,20 @@ class User extends Component
         $this->editCheck = true;
     }
 
-    public function update ($id)
+    public function update($id)
     {
         $validate = $this->validate(
             [
                 'name' => 'required',
                 'email' => 'required|email',
                 'password' => 'required|min:6'
-            ]);
+            ]
+        );
 
-            $user = ModelsUser::find($id);
-            $user->update($validate);
-            session()->flash('message', 'User berhasil di update');
-            $this->clear();
+        $user = ModelsUser::find($id);
+        $user->update($validate);
+        session()->flash('message', 'User berhasil di update');
+        $this->clear();
     }
 
     public function clear()
@@ -72,5 +75,5 @@ class User extends Component
         $this->password = '';
         $this->idEdit = '';
         $this->editCheck = false;
-    }   
+    }
 }
