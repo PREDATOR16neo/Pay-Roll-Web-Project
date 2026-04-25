@@ -18,4 +18,8 @@ Route::get('/employee', function () {
 Route::get('/user', function () {
     return view('admin.pengguna');
 });
+
+Route::get('/payroll', function () {
+    return view('admin.payroll');
+});
 // End Routing Admin

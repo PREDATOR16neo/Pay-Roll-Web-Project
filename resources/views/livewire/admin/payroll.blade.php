@@ -1,5 +1,5 @@
 <div>
-    <h1>Welcome to Employee Page</h1>
+    <h1>Welcome to Payroll Page</h1>
 
     @if ($errors->any())
         <div class="text-red-500">
@@ -16,38 +16,39 @@
 
     <form class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg space-y-5" wire:submit.prevent='store'>
 
+        <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Employee</label>
+            <select wire:model='employee_id'
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                <option value="">--- Employee ---</option>
+                @foreach ($employees as $item)
+                    <option value="{{ $item->id }}">{{ $item->user->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+
         <h2 class="text-xl font-semibold text-gray-700 text-center">Form Input</h2>
 
         <!-- User -->
         <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">User</label>
-            <select wire:model='user_id'
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">--- User ---</option>
-                @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
-            </select>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Period</label>
+            <input type="number" class="w-full border border-gray-500 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" wire:model="period" placeholder="Masukkan period...">
         </div>
 
         <!-- Position -->
         <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Position</label>
-            <select wire:model='position_id'
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">--- Position ---</option>
-                @foreach ($positions as $position)
-                    <option value="{{ $position->id }}">{{ $position->name }}</option>
-                @endforeach
-            </select>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Allowance</label>
+            <input type="number" class="w-full border border-gray-500 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" wire:model="allowance" placeholder="Masukkan allowance...">
         </div>
 
         <!-- Number Input -->
         <div>
-            <label class="block text-sm font-medium text-gray-600 mb-1">Gaji</label>
-            <input wire:model='salary' type="number"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                placeholder="Masukkan gaji...">
+            <label class="block text-sm font-medium text-gray-600 mb-1">Deduction</label>
+            <input type="number" 
+            class="w-full border border-gray-500 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+            wire:model="deduction" 
+            placeholder="Masukkan deduction...">
         </div>
 
         <!-- Button -->
@@ -78,20 +79,24 @@
             <thead class="sticky top-0 bg-white ltr:text-left rtl:text-right">
                 <tr class="*:font-medium *:text-gray-900">
                     <th class="px-3 py-2 whitespace-nowrap">#</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Username</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Position</th>
-                    <th class="px-3 py-2 whitespace-nowrap">Salary</th>
+                    <th class="px-3 py-2 whitespace-nowrap">Employe name</th>
+                    <th class="px-3 py-2 whitespace-nowrap">Period</th>
+                    <th class="px-3 py-2 whitespace-nowrap">allowance</th>
+                    <th class="px-3 py-2 whitespace-nowrap">Deduction</th>
+                    <th class="px-3 py-2 whitespace-nowrap">Net Salary</th>
                     <th class="px-3 py-2 whitespace-nowrap">Action</th>
                 </tr>
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-                @foreach ($employees as $item)
+                @foreach ($payrolls as $item)
                     <tr class="text-center">
-                        <td class="px-3 py-2 whitespace-nowrap">{{ $loop->iteration }}</td>
-                        <td class="px-3 py-2 whitespace-nowrap">{{ $item->user->name }}</td>
-                        <td class="px-3 py-2 whitespace-nowrap">{{ $item->position->name }}</td>
-                        <td class="px-3 py-2 whitespace-nowrap">Rp. 0{{ number_format($item->salary) }}</td>
+                        <td class="px-3 py-2 whitespace-nowrap">{{ $loop->iteration }}
+
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">{{ $item->name }}</td>
+                        <td class="px-3 py-2 whitespace-nowrap">{{ $item->email }}</td>
+                        <td class="px-3 py-2 whitespace-nowrap">{{ $item->password }}</td>
                         <td class="px-3 py-2 whitespace-nowrap">
                             <button class="bg-red-500 px-4 py-2 text-white rounded"
                                 wire:click='destroy({{ $item->id }})'>Hapus</button>
